@@ -4,6 +4,8 @@
  */
 package Jframes;
 
+import ClasesEstaticas.AccederUsuarios;
+
 /**
  *
  * @author chiri
@@ -50,7 +52,7 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Principal.jpg"))); // NOI18N
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jLabel3.setText("Usuario :");
+        jLabel3.setText("Correo :");
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 260, -1, -1));
 
         jLabel4.setText("Contraseña :");
@@ -104,32 +106,31 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtonInicioActionPerformed
-        {
-            try {
-                String usuario = TxtUsuario.getText();
-                String contraseña = new String(PsContraseña.getPassword());
-                if (usuario.isEmpty() || contraseña.isEmpty()) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingrese su usuario y contraseña");
-                    return;
-                }
-                if (usuario.equals("admin") && contraseña.equals("admin")) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso");
-                    Home h = new Home();
-                    h.setVisible(true);
-                    this.dispose();
-                } else {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
-                }
-            } catch (Exception e) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Ocurrió un error: " + e.getMessage());
-            
+        try {
+            String correoElectronico = TxtUsuario.getText();
+            String contraseña = new String(PsContraseña.getPassword());
+            if (correoElectronico.isEmpty() || contraseña.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingrese su correo electrónico y contraseña");
+                return;
             }
+            AccederUsuarios accederUsuarios = new AccederUsuarios();
+            String storedPassword = accederUsuarios.obtenerContrasenaPorCorreo(correoElectronico);
+            if (storedPassword != null && storedPassword.equals(contraseña)) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso");
+                Home h = new Home();
+                h.setVisible(true);
+                this.dispose();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Correo electrónico o contraseña incorrectos");
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ocurrió un error: " + e.getMessage());
         }
     }//GEN-LAST:event_BtonInicioActionPerformed
 
     /**
-             * @param args the command line arguments
-             */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
